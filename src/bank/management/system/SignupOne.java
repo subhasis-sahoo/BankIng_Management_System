@@ -221,12 +221,15 @@ public class SignupOne extends JFrame implements ActionListener {
                 DBConnection conn = new DBConnection();
                 String qry = "INSERT INTO user VALUES('" + formNo + "', '" + name + "', '" + fName + "', '" + dob + "', '" + gender + "', '" + email + "', '" + marital + "', '" + address + "', '" + city + "', '" + state + "', '" + pinCode + "')";
                 conn.stmt.executeUpdate(qry);
+
+                setVisible(false);
+                new SignupTwo(formNo).setVisible(true);
             }
 
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
 
     }
