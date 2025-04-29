@@ -2,22 +2,27 @@ package bank.management.system;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import com.toedter.calendar.JDateChooser;
 
-public class SignupOne extends JFrame {
+public class SignupOne extends JFrame implements ActionListener {
 
+    int randFormNo;
     JLabel formNo, personalDetails, name, fName, dob, gender, email, marital, address, city, state, pinCode;
     JTextField nameField, fNameField, emailField, addressField, cityField, stateField, pinCodeField;
     JDateChooser dobField;
     JButton next;
-    JRadioButton male, female, married, unmarried, others;
+    JRadioButton male, female, married, unmarried, other;
     ButtonGroup genderGroup, maritalGroup;
+//    JDateChooser dateChooser = new JDateChooser();
 
     SignupOne() {
 
         setLayout(null);
 
-        int randFormNo = (int) (Math.random() * ((10000 - 1000) + 1000));
+        randFormNo = (int) (Math.random() * ((10000 - 1000) + 1000));
         formNo = new JLabel("APPLICATION FORM NO. " + randFormNo);
         formNo.setFont(new Font("Railway", Font.BOLD, 30));
         formNo.setBounds(200, 20, 600, 40);
@@ -102,15 +107,15 @@ public class SignupOne extends JFrame {
         unmarried.setBackground(Color.WHITE);
         add(unmarried);
 
-        others = new JRadioButton("Others");
-        others.setBounds(630, 390, 100, 30);
-        others.setBackground(Color.WHITE);
-        add(others);
+        other = new JRadioButton("Other");
+        other.setBounds(630, 390, 100, 30);
+        other.setBackground(Color.WHITE);
+        add(other);
 
         maritalGroup = new ButtonGroup();
         maritalGroup.add(married);
         maritalGroup.add(unmarried);
-        maritalGroup.add(others);
+        maritalGroup.add(other);
 
         address = new JLabel("Address: ");
         address.setFont(new Font("Railway", Font.BOLD, 20));
@@ -157,6 +162,7 @@ public class SignupOne extends JFrame {
         next.setBackground(Color.BLACK);
         next.setForeground(Color.WHITE);
         next.setBounds(600, 660, 100, 30);
+        next.addActionListener(this);
         add(next);
 
 
@@ -165,6 +171,64 @@ public class SignupOne extends JFrame {
         setSize(850, 800);
         setLocation(350, 10);
         setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        String formNo = "" + randFormNo;
+        String name = nameField.getText();
+        String fName = fNameField.getText();
+        String dob = ((JTextField) dobField.getDateEditor().getUiComponent()).getText();
+        System.out.println(dob);
+        String gender;
+        if(male.isSelected()) gender = "Male";
+        else if(female.isSelected()) gender = "Female";
+        else gender = "";
+
+        String email = emailField.getText();
+        String marital;
+        if(married.isSelected()) marital = "Married";
+        else if(unmarried.isSelected()) marital = "Unmarried";
+        else if(other.isSelected()) marital = "Other";
+        else marital = "";
+
+        String address = addressField.getText();
+        String city = cityField.getText();
+        String state = stateField.getText();
+        String pinCode = pinCodeField.getText();
+
+        try {
+            if(name.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Name is Required");
+            } else if(fName.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Father's Name is required");
+            } else if(dob.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Date of Birth is required");
+            } else if(gender.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Gender is required");
+            } else if(email.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Email is required");
+            } else if(marital.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Marital Status is required");
+            } else if(address.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Address is required");
+            } else if(city.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "City is required");
+            } else if(state.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "State is required");
+            } else if(pinCode.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "PIN Code is required");
+            } else {
+                DBConnection conn = new DBConnection();
+                String qry = "INSERT INTO user VALUES('" + formNo + "', '" + name + "', '" + fName + "', '" + dob + "', '" + gender + "', '" + email + "', '" + marital + "', '" + address + "', '" + city + "', '" + state + "', '" + pinCode + "')";
+                conn.stmt.executeUpdate(qry);
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void main(String[] args) {
