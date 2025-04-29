@@ -211,6 +211,9 @@ public class SignupTwo extends JFrame implements ActionListener {
                 DBConnection conn = new DBConnection();
                 String qry = "INSERT INTO personal_details VALUES('" + formNo + "', '" + religion + "', '" + category + "', '" + income + "', '" + qualification + "', '" + occupation + "', '" + pan + "', '" + aadhaar + "', '" + isSenior + "', '" + isAccountExist + "')";
                 conn.stmt.executeUpdate(qry);
+
+                setVisible(false);
+                new SignupThree().setVisible(true);
             }
         } catch (Exception e) {
             System.out.println(e);
