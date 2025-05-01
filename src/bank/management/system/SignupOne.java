@@ -22,7 +22,7 @@ public class SignupOne extends JFrame implements ActionListener {
 
         setLayout(null);
 
-        randFormNo = (int) (Math.random() * ((10000 - 1000) + 1000));
+        randFormNo = (int) (Math.random() * (10000 - 1000) + 1000);
         formNo = new JLabel("APPLICATION FORM NO. " + randFormNo);
         formNo.setFont(new Font("Railway", Font.BOLD, 30));
         formNo.setBounds(200, 20, 600, 40);
