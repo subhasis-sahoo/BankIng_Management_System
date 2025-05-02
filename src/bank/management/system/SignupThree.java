@@ -180,7 +180,7 @@ public class SignupThree extends JFrame implements ActionListener {
             }
 
             Random random = new Random();
-            String cardNo = "" + Math.abs((random.nextLong() % 90000000L) + 50409363L);
+            String cardNo = "" + 50409363L + Math.abs((random.nextLong() % 90000000L));
             System.out.println(cardNo);
 
             String pinNo = "" + (int) (Math.random() * (10000 - 1000) + 1000);
@@ -206,13 +206,17 @@ public class SignupThree extends JFrame implements ActionListener {
                     conn.stmt.executeUpdate(qry2);
 
                     JOptionPane.showMessageDialog(null, "Card No: " + cardNo + "\nPIN No: " + pinNo);
+
+                    setVisible(false);
+                    new Deposit(pinNo).setVisible(true);
                 }
             } catch (Exception e) {
                 System.out.println(e);
             }
 
         } else if(ae.getSource() == cancel) {
-
+            setVisible(false);
+            new Login().setVisible(true);
         }
     }
 

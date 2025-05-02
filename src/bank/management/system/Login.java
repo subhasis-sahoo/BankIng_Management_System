@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 public class Login extends JFrame implements ActionListener {
 
@@ -78,7 +79,26 @@ public class Login extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == login) {
-            System.out.println("log in");
+            String cardNumber = cardTextField.getText();
+            String pinNumber = pinTextField.getText();
+
+            try{
+                DBConnection conn = new DBConnection();
+                String qry = "SELECT * FROM logIn WHERE cardNo = '" + cardNumber + "' AND pinNo = '" + pinNumber + "'";
+                ResultSet result = conn.stmt.executeQuery(qry);
+
+                if(result.next()) {
+                    setVisible(false);
+                    new Transaction(pinNumber).setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incorrect Card Number Or PIN number");
+                }
+            } catch(Exception e) {
+                System.out.println(e);
+            }
+
+
+
         } else if(ae.getSource() == clear) {
             cardTextField.setText("");
             pinTextField.setText("");
